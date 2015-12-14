@@ -11,6 +11,16 @@ canvas {
 
 position: absolute;
 
+margin:auto;
+
+}
+
+h1{
+text-align:center;
+color:white;
+font: "Verdana";
+
+
 }
 </style>
 
@@ -36,6 +46,8 @@ var timer4;
 var timer5;
 var timer6;
 var timer7;
+var timer8;
+var timer9;
 var resetTimer;
 var resetTimer2;
 var resetTimer3;
@@ -57,27 +69,60 @@ this.dy = Math.random()*4-2;
 this.color = color;
 }
 
-function clickHandler(x, y) {
-var found = false;
+ function clickHandler(x, y) {
+	     var found = false;
+		 for (var i=0; i<circles.length; i++) {
+			d = Math.sqrt((circles[i].x - x)*(circles[i].x - x) + (circles[i].y - y)*(circles[i].y - y));
+			if (d <= 30) {
+				circles.splice(i, 1);
+				found = true;
+			}
+		 }
+		 fillBackgroundColor();
+		 if (!found) {
+			var colors = ["red", "green", "blue", "#EC2360", "purple", "yellow"];
+			var color = colors[Math.floor(Math.random()*colors.length)];
+			circles.push(new Circle(x, y, color));
+		}
+		for (var i=0; i<circles.length; i++) {
+			drawCircle(circles[i]);
+		}
+	  }
+	  function drawCircle(circle) {
+		 context.beginPath();
+		 context.arc(circle.x, circle.y, 30, 0, degreesToRadians(360), true);
+		 context.fillStyle = circle.color;
+		 context.fill();
+		 if (circle.x + circle.dx > canvas.width || circle.x + circle.dx < 0)
+			circle.dx = -circle.dx;
+		 if (circle.y + circle.dy > canvas.height || circle.y + circle.dy < 0)
+			circle.dy = -circle.dy;
+		 circle.x += circle.dx;
+		 circle.y += circle.dy;
+	  }
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+		fillBackgroundColor();
+		for (var i=0; i<circles.length; i++) {
+			drawCircle(circles[i]);
+		 }
+      }
+	  function fillBackgroundColor() {
+		 
+		 context.fillStyle = 'black';
+		 context.fillRect(0, 0, canvas.width, canvas.height);
+	}
+	function degreesToRadians(degrees) {
+		//converts from degrees to radians and returns
+		return (degrees * Math.PI)/180;
+	}
+function keepCircle(){
 for (var i=0; i<circles.length; i++) {
-d = Math.sqrt((circles[i].x - x)*(circles[i].x - x) + (circles[i].y - y)*(circles[i].y - y));
-if (d <= 30) {
-circles.splice(i, 1);
-found = true;
-}
-}
-fillBg();
-if (!found) {
-var colors = ['red', 'purple','blue','pink','yellow', 'green'];
-var color = colors[Math.floor(Math.random()*colors.length)];
-circles.push(new Circle(event.x, event.y, color));
-}
-for (var i=0; i<circles.length; i++) {
-drawCircle(circles[i]);
-}
-}
-
-
+			drawCircle(circles[i]);
+		 }
+}		 
+		 
 var fps = 100;
 
 function drawCircle(circle) {
@@ -100,41 +145,46 @@ context.fillRect(0, 0, canvas.width, canvas.height);
 }
 
 
+		
+		 
+      
 
 
-var  quotes = ['Click to make circles flash','Press the spacebar for motivation','Aim for the moon, if you miss you may hit a star.','Try to be a rainbow in someone\'s cloud','You can fill the world with sunshine.', 'The most important thing is to be happy','Never Give Up', 'Be the best you can be'];
+
+
+var  quotes = ['Press the spacebar for motivation', 'Click to make circles','Aim for the moon, if you miss you may hit a star.','Try to be a rainbow in someone\'s cloud','You can fill the world with sunshine.', 'The most important thing is to be happy','Never Give Up', 'Be the best you can be'];
 
 
 
 
 
-function Quotes() {
+/*function Quotes() {
 context6.font = '16px Helvetica';
 context6.strokeText(quotes[i], canvas.width/2, canvas.height/2);
 context6.fillStyle = 'white';
 context6.fillText(quotes[i], canvas.width/2, canvas.height/2);
-}
-function newQuote() {
+}*/
+/*function newQuote() {
 document.addEventListener('keydown', function(event){
 
 randomY = Math.random;
 var quoteKey = event.keyCode;
 quoteIndex += 1;
 jokeIndex = 0;
-for( var i = 0; i <quotes.length; i++) {
+/*for( var i = 0; i <quotes.length; i++) {
 	
 	if (quoteKey = 32){
 		quotes[i];
 	}
-}
-return quotes[quoteIndex];
+}*/
+/*return quotes[quoteIndex];
 });
-}
+}*/
 
 function makeQuotes() {
 var i = 0;
 setTimeout(function() {
-context6.clearRect(0, 0, 500, 400);
+context6.clearRect(0, 0, canvas.width, canvas.height);
 requestAnimationFrame(makeQuotes);
 context6.font = 'bold 16px Helvetica';
 context6.strokeText(quotes[quoteIndex], canvas.width/3, canvas.height/3);
@@ -144,10 +194,6 @@ context6.fillText(quotes[quoteIndex], canvas.width/3, canvas.height/3);
 }, 3000 / fps);
 context6.fillStyle = 'black';
 drawTextBox();
-if (quotes[i] >= 0) {
-quotes[i] -= 1;
-context7.fillStyle = 'black';
-}
 }
 function drawDiamond() {
 context2.save();
@@ -364,6 +410,17 @@ canvas8.onclick = function(event) {
 clickHandler(event.clientX, event.clientY);
 };
 
+document.addEventListener('keydown', function(event){
+	var quoteKey = event.keyCode;
+	if (quoteKey == 32) {
+		if (quoteIndex < quotes.length -1) {
+			quoteIndex += 1;
+		}
+		else {
+			quoteIndex = 0;
+		}
+	}
+});
 
 //particles
 context2 = canvas2.getContext('2d');
@@ -382,12 +439,13 @@ makeParticles();
 timer = setInterval(moveParticles, 45);
 resetTimer = setInterval(makeParticles, 3000);
 
-
+timer9 = setInterval(keepCircle, 50);
 timer8 = setInterval(drawTextBox, 10);
 drawTextBox();
-makeQuotes();
-timer3 = setInterval(newQuote, 3000);
+
 makeRectangles();
+makeQuotes();
+timer3= setInterval(keepCircle,1000);
 timer4 = setInterval(drawRectangle, 10);
 resetTimer2 = setInterval(makeRectangles, 1000);
 timer2 = setInterval(drawHeart, 45);
@@ -403,14 +461,15 @@ resetTimer5 = setInterval(motionDiamondBlur, 59.99);
 </script>
 </head>
 <body>
-<canvas id='canvas' width='800' height='500' style='z-index: 1'></canvas>
-<canvas id='canvas2' width='800' height='500' style='z-index: 2'></canvas>
-<canvas id='canvas3' width='800' height='500' style='z-index: 3'></canvas>
-<canvas id='canvas4' width='800' height='500' style='z-index: 4'></canvas>
-<canvas id='canvas5' width='800' height='500' style='z-index: 5'></canvas>
-<canvas id='canvas6' width='800' height='500' style='z-index: 7'></canvas>
-<canvas id='canvas7' width='800' height='500' style='z-index: 6'></canvas>
-<canvas id='canvas8' width='800' height='500' style='z-index: 9'></canvas>
+<h1>Carnival of Motivation</h1>
+<canvas id='canvas' width='1350' height='500' style='z-index: 1'></canvas>
+<canvas id='canvas2' width='1350' height='500' style='z-index: 2'></canvas>
+<canvas id='canvas3' width='1350' height='500' style='z-index: 3'></canvas>
+<canvas id='canvas4' width='1350' height='500' style='z-index: 4'></canvas>
+<canvas id='canvas5' width='1350' height='500' style='z-index: 5'></canvas>
+<canvas id='canvas6' width='1350' height='500' style='z-index: 7'></canvas>
+<canvas id='canvas7' width='1350' height='500' style='z-index: 6'></canvas>
+<canvas id='canvas8' width='1350' height='500' style='z-index: 9'></canvas>
 
 </body>
 </html>
