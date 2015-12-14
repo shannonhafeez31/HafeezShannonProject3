@@ -102,7 +102,7 @@ context.fillRect(0, 0, canvas.width, canvas.height);
 
 
 
-var  quotes = ['Click to make circles flash','Aim for the moon, if you miss you may hit a star.','Try to be a rainbow in someone\'s cloud','You can fill the world with sunshine.', 'The most important thing is to be happy','Never Give Up', 'Be the best you can be'];
+var  quotes = ['Click to make circles flash','Press the spacebar for motivation','Aim for the moon, if you miss you may hit a star.','Try to be a rainbow in someone\'s cloud','You can fill the world with sunshine.', 'The most important thing is to be happy','Never Give Up', 'Be the best you can be'];
 
 
 
@@ -115,11 +115,20 @@ context6.fillStyle = 'white';
 context6.fillText(quotes[i], canvas.width/2, canvas.height/2);
 }
 function newQuote() {
+document.addEventListener('keydown', function(event){
+
+randomY = Math.random;
+var quoteKey = event.keyCode;
 quoteIndex += 1;
-if (quoteIndex >= quotes.length) {
-quoteIndex = 0;
+jokeIndex = 0;
+for( var i = 0; i <quotes.length; i++) {
+	
+	if (quoteKey = 32){
+		quotes[i];
+	}
 }
 return quotes[quoteIndex];
+});
 }
 
 function makeQuotes() {
@@ -128,10 +137,10 @@ setTimeout(function() {
 context6.clearRect(0, 0, 500, 400);
 requestAnimationFrame(makeQuotes);
 context6.font = 'bold 16px Helvetica';
-context6.strokeText(quotes[quoteIndex], canvas.width/5, canvas.height/5);
+context6.strokeText(quotes[quoteIndex], canvas.width/3, canvas.height/3);
 context6.textAlign = 'center';
 context6.fillStyle = 'white';
-context6.fillText(quotes[quoteIndex], canvas.width/5, canvas.height/5);
+context6.fillText(quotes[quoteIndex], canvas.width/3, canvas.height/3);
 }, 3000 / fps);
 context6.fillStyle = 'black';
 drawTextBox();
@@ -343,14 +352,6 @@ return (degrees * Math.PI)/180;
 
 
 
-function resizeCanvas() {
-	canvas.width = window.innerWidth - 10;
-	canvas.height = window.innerHeight - 10;
-	
-	
-	
-	}
-
 
 
 window.onload = function() {
@@ -363,7 +364,7 @@ canvas8.onclick = function(event) {
 clickHandler(event.clientX, event.clientY);
 };
 
-resizeCanvas();
+
 //particles
 context2 = canvas2.getContext('2d');
 //diamond
@@ -402,13 +403,14 @@ resetTimer5 = setInterval(motionDiamondBlur, 59.99);
 </script>
 </head>
 <body>
-<canvas id='canvas' width='2000' height='800' style='z-index: 1'></canvas>
-<canvas id='canvas2' width='2000' height='800' style='z-index: 2'></canvas>
-<canvas id='canvas3' width='2000' height='800' style='z-index: 3'></canvas>
-<canvas id='canvas4' width='2000' height='800' style='z-index: 4'></canvas>
-<canvas id='canvas5' width='2000' height='800' style='z-index: 5'></canvas>
-<canvas id='canvas6' width='2000' height='800' style='z-index: 7'></canvas>
-<canvas id='canvas7' width='2000' height='800' style='z-index: 6'></canvas>
-<canvas id='canvas8' width='2000' height='800' style='z-index: 9'></canvas>
+<canvas id='canvas' width='800' height='500' style='z-index: 1'></canvas>
+<canvas id='canvas2' width='800' height='500' style='z-index: 2'></canvas>
+<canvas id='canvas3' width='800' height='500' style='z-index: 3'></canvas>
+<canvas id='canvas4' width='800' height='500' style='z-index: 4'></canvas>
+<canvas id='canvas5' width='800' height='500' style='z-index: 5'></canvas>
+<canvas id='canvas6' width='800' height='500' style='z-index: 7'></canvas>
+<canvas id='canvas7' width='800' height='500' style='z-index: 6'></canvas>
+<canvas id='canvas8' width='800' height='500' style='z-index: 9'></canvas>
+
 </body>
 </html>
